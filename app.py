@@ -53,6 +53,8 @@ elif pagina == "Ejercicio 1":
                 "valor": valor
             }
             st.session_state.movimientos.append(nuevo)
+            st.session_state.movimientos.concepto = ""
+            st.session_state.movimientos.valor = 0.0
             st.success("Movimiento agregado")
             st.rerun()
     
