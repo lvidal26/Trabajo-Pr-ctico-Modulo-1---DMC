@@ -36,11 +36,9 @@ elif pagina == "Ejercicio 1":
     if "movimientos" not in st.session_state:
         st.session_state.movimientos = []
     
-    # NO inicialices concepto_ej1 y valor_ej1 aquí
-    
-    concepto = st.text_input("Concepto", key="concepto_ej1")
+    concepto = st.text_input("Concepto")
     tipo = st.selectbox("Tipo", ["Ingreso", "Gasto"])
-    valor = st.number_input("Valor", key="valor_ej1")
+    valor = st.number_input("Valor")
 
     if st.button("Agregar movimiento"):
         if concepto == "":
@@ -55,12 +53,6 @@ elif pagina == "Ejercicio 1":
             }
             st.session_state.movimientos.append(nuevo)
             st.success("Movimiento agregado")
-            
-            # LIMPIAR DESPUÉS DE st.rerun()
-            st.session_state.concepto_ej1 = ""
-            st.session_state.valor_ej1 = 0.0
-            
-            st.rerun()
     
     if len(st.session_state.movimientos) > 0:
         df = pd.DataFrame(st.session_state.movimientos)
@@ -71,9 +63,9 @@ elif pagina == "Ejercicio 1":
         saldo = ingresos - gastos
         
         col1, col2, col3 = st.columns(3)
-        col1.metric("Ingresos", f"S/. {ingresos:.2f}")
-        col2.metric("Gastos", f"S/. {gastos:.2f}")
-        col3.metric("Saldo", f"S/. {saldo:.2f}")
+        col1.metric("Ingresos", f"S/. {ingresos:.1f}")
+        col2.metric("Gastos", f"S/. {gastos:.1f}")
+        col3.metric("Saldo", f"S/. {saldo:.1f}")
         
 # EJERCICIO 2
 elif pagina == "Ejercicio 2":
