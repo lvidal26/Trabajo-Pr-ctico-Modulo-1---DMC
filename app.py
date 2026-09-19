@@ -33,13 +33,16 @@ if pagina == "Home":
 elif pagina == "Ejercicio 1":
     st.title("Flujo de Caja")
     
-    # ← AGREGAR ESTO
     if "movimientos" not in st.session_state:
         st.session_state.movimientos = []
+    if "concepto_ej1" not in st.session_state:
+        st.session_state.concepto_ej1 = ""
+    if "valor_ej1" not in st.session_state:
+        st.session_state.valor_ej1 = 0.0
     
-    concepto = st.text_input("Concepto")
+    concepto = st.text_input("Concepto", key="concepto_ej1")
     tipo = st.selectbox("Tipo", ["Ingreso", "Gasto"])
-    valor = st.number_input("Valor")
+    valor = st.number_input("Valor", key="valor_ej1")
 
     if st.button("Agregar movimiento"):
         if concepto == "":
@@ -53,8 +56,11 @@ elif pagina == "Ejercicio 1":
                 "valor": valor
             }
             st.session_state.movimientos.append(nuevo)
-            st.session_state.movimientos.concepto = ""
-            st.session_state.movimientos.valor = 0.0
+            
+            # LIMPIAR LOS INPUTS (no la lista)
+            st.session_state.concepto_ej1 = ""
+            st.session_state.valor_ej1 = 0.0
+            
             st.success("Movimiento agregado")
             st.rerun()
     
@@ -70,6 +76,7 @@ elif pagina == "Ejercicio 1":
         col1.metric("Ingresos", f"S/. {ingresos:.2f}")
         col2.metric("Gastos", f"S/. {gastos:.2f}")
         col3.metric("Saldo", f"S/. {saldo:.2f}")
+        
 # EJERCICIO 2
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
