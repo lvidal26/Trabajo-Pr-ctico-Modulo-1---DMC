@@ -39,6 +39,36 @@ elif pagina == "Ejercicio 1":
     tipo = st.selectbox("Tipo", ["Ingreso", "Gasto"])
     valor = st.number_input("Valor")
 
+    # BOTÓN
+    if st.button("Agregar movimiento"):
+        # VALIDACIÓN SIMPLE
+        if concepto == "":
+            st.error("Debes ingresar un concepto")
+        elif valor <= 0:
+            st.error("El valor debe ser mayor que cero")
+        else:
+            nuevo = {
+                "concepto": concepto,
+                "tipo": tipo,
+                "valor": valor
+            }
+            movimientos.append(nuevo)
+            st.success("Movimiento agregado")
+    
+    # RESULTADOS
+    if len(movimientos) > 0:
+        df = pd.DataFrame(movimientos)
+        st.dataframe(df)
+        
+        ingresos = df[df["tipo"] == "Ingreso"]["valor"].sum()
+        gastos = df[df["tipo"] == "Gasto"]["valor"].sum()
+        saldo = ingresos - gastos
+        
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Ingresos", f"S/. {ingresos:.2f}")
+        col2.metric("Gastos", f"S/. {gastos:.2f}")
+        col3.metric("Saldo", f"S/. {saldo:.2f}")
+
 # EJERCICIO 2
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
