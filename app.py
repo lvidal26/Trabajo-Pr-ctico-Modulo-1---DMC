@@ -2,7 +2,7 @@
 import streamlit as st
 import numpy as np
 import libreria_funciones_proyecto1 as lf
-
+import pandas as pd
 
 # CREAR LA NAVEGACIÓN
 pagina = st.sidebar.selectbox(
@@ -35,13 +35,9 @@ elif pagina == "Ejercicio 1":
     
     movimientos = []
     
-    if st.button("Agregar movimiento"):
-        nuevo = {
-            "concepto": concepto,
-            "tipo": tipo,
-            "valor": valor
-        }
-        movimientos.append(nuevo)
+    concepto = st.text_input("Concepto")
+    tipo = st.selectbox("Tipo", ["Ingreso", "Gasto"])
+    valor = st.number_input("Valor")
 
 # EJERCICIO 2
 elif pagina == "Ejercicio 2":
