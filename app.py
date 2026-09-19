@@ -33,15 +33,15 @@ if pagina == "Home":
 elif pagina == "Ejercicio 1":
     st.title("Flujo de Caja")
     
-    movimientos = []
+    # ← AGREGAR ESTO
+    if "movimientos" not in st.session_state:
+        st.session_state.movimientos = []
     
     concepto = st.text_input("Concepto")
     tipo = st.selectbox("Tipo", ["Ingreso", "Gasto"])
     valor = st.number_input("Valor")
 
-    # BOTÓN
     if st.button("Agregar movimiento"):
-        # VALIDACIÓN SIMPLE
         if concepto == "":
             st.error("Debes ingresar un concepto")
         elif valor <= 0:
@@ -52,12 +52,12 @@ elif pagina == "Ejercicio 1":
                 "tipo": tipo,
                 "valor": valor
             }
-            movimientos.append(nuevo)
+            st.session_state.movimientos.append(nuevo)
             st.success("Movimiento agregado")
+            st.rerun()
     
-    # RESULTADOS
-    if len(movimientos) > 0:
-        df = pd.DataFrame(movimientos)
+    if len(st.session_state.movimientos) > 0:
+        df = pd.DataFrame(st.session_state.movimientos)
         st.dataframe(df)
         
         ingresos = df[df["tipo"] == "Ingreso"]["valor"].sum()
@@ -68,7 +68,6 @@ elif pagina == "Ejercicio 1":
         col1.metric("Ingresos", f"S/. {ingresos:.2f}")
         col2.metric("Gastos", f"S/. {gastos:.2f}")
         col3.metric("Saldo", f"S/. {saldo:.2f}")
-
 # EJERCICIO 2
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
