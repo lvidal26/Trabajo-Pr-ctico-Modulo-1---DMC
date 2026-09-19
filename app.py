@@ -54,6 +54,7 @@ elif pagina == "Ejercicio 1":
             }
             movimientos.append(nuevo)
             st.success("Movimiento agregado")
+            st.rerun()
     
     # RESULTADOS
     if len(movimientos) > 0:
