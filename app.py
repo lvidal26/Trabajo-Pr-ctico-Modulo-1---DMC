@@ -28,6 +28,11 @@ if pagina == "Home":
     st.divider()
     
     st.write("**Tecnologías:** Python • Streamlit • Pandas • NumPy")
+    
+    st.divider()
+    
+    st.markdown("## Tecnologías")
+    st.markdown("- Python\n- Streamlit\n- Pandas\n- NumPy")
 
 # EJERCICIO 1
 elif pagina == "Ejercicio 1":
