@@ -32,19 +32,25 @@ if pagina == "Home":
 # EJERCICIO 1
 elif pagina == "Ejercicio 1":
     st.title("Flujo de Caja")
-    st.write("Tus funciones del Ejercicio 1 aquí")
+    
+    movimientos = []
+    
+    if st.button("Agregar movimiento"):
+        nuevo = {
+            "concepto": concepto,
+            "tipo": tipo,
+            "valor": valor
+        }
+        movimientos.append(nuevo)
 
 # EJERCICIO 2
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
-    st.write("Tus funciones del Ejercicio 2 aquí")
 
 # EJERCICIO 3
 elif pagina == "Ejercicio 3":
     st.title("Funciones Externas")
-    st.write("Tus funciones del Ejercicio 3 aquí")
 
 # EJERCICIO 4
 elif pagina == "Ejercicio 4":
     st.title("CRUD")
-    st.write("Tus funciones del Ejercicio 4 aquí")
