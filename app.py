@@ -35,10 +35,8 @@ elif pagina == "Ejercicio 1":
     
     if "movimientos" not in st.session_state:
         st.session_state.movimientos = []
-    if "concepto_ej1" not in st.session_state:
-        st.session_state.concepto_ej1 = ""
-    if "valor_ej1" not in st.session_state:
-        st.session_state.valor_ej1 = 0.0
+    
+    # NO inicialices concepto_ej1 y valor_ej1 aquí
     
     concepto = st.text_input("Concepto", key="concepto_ej1")
     tipo = st.selectbox("Tipo", ["Ingreso", "Gasto"])
@@ -56,12 +54,12 @@ elif pagina == "Ejercicio 1":
                 "valor": valor
             }
             st.session_state.movimientos.append(nuevo)
+            st.success("Movimiento agregado")
             
-            # LIMPIAR LOS INPUTS (no la lista)
+            # LIMPIAR DESPUÉS DE st.rerun()
             st.session_state.concepto_ej1 = ""
             st.session_state.valor_ej1 = 0.0
             
-            st.success("Movimiento agregado")
             st.rerun()
     
     if len(st.session_state.movimientos) > 0:
