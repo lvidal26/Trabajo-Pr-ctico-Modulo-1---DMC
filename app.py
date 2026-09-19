@@ -15,7 +15,7 @@ if pagina == "Home":
     st.title("Home")
     st.image("logo dmc.png", width = 300)
     st.sidebar.image("logo dmc.png")
-    st.write("Bienvenido al proyecto Módulo 1 – Python Fundamentals")
+    st.subheader("Bienvenido al proyecto Módulo 1 – Python Fundamentals")
     st.write("**Nombre:** Luis Vidal")
     st.write("**Edad:** 18 años")
     st.write("**Ubicación:** Lima")
