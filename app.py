@@ -189,4 +189,136 @@ elif pagina == "Ejercicio 3":
         st.info("Aún no hay estudiantes evaluados")
 # EJERCICIO 4
 elif pagina == "Ejercicio 4":
-    st.title("CRUD")
+    st.title("CRUD - Gestión de Empleados")
+    st.markdown("Crea, lee, actualiza o elimina registros de empleados usando la clase Empleado.")
+    
+    # Inicializar session_state
+    if "empleados_ej4" not in st.session_state:
+        st.session_state.empleados_ej4 = []
+    
+    # Selector de operación CRUD con tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["Crear", "Leer", "Actualizar", "Eliminar"])
+    
+    # ====== TAB 1: CREAR ======
+    with tab1:
+        st.subheader("Crear Nuevo Empleado")
+        st.markdown("Completa el formulario para agregar un nuevo empleado")
+        
+        nombre = st.text_input("Nombre del empleado", key="crear_nombre")
+        col1, col2 = st.columns(2)
+        with col1:
+            salario_base = st.number_input("Salario base (S/.)", min_value=0.0, value=2000.0, key="crear_salario")
+        with col2:
+            porcentaje_bono = st.number_input("Porcentaje bono (%)", min_value=0.0, max_value=100.0, value=10.0, key="crear_bono")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            porcentaje_descuento = st.number_input("Porcentaje descuento (%)", min_value=0.0, max_value=100.0, value=5.0, key="crear_descuento")
+        
+        if st.button("Crear Empleado", key="btn_crear"):
+            if nombre == "":
+                st.error("Ingresa el nombre del empleado")
+            else:
+                try:
+                    nuevo_empleado = lf_clase.Empleado(
+                        nombre=nombre,
+                        salario_base=salario_base,
+                        porcentaje_bono=porcentaje_bono,
+                        porcentaje_descuento=porcentaje_descuento
+                    )
+                    st.session_state.empleados_ej4.append(nuevo_empleado)
+                    st.success(f"Empleado '{nombre}' creado correctamente")
+                except ValueError as e:
+                    st.error(str(e))
+    
+    # ====== TAB 2: LEER ======
+    with tab2:
+        st.subheader("Visualizar Todos los Empleados")
+        
+        if len(st.session_state.empleados_ej4) > 0:
+            st.markdown(f"**Total de empleados:** {len(st.session_state.empleados_ej4)}")
+            
+            datos = [emp.resumen() for emp in st.session_state.empleados_ej4]
+            df = pd.DataFrame(datos)
+            st.dataframe(df, use_container_width=True)
+            
+            # Estadísticas
+            st.divider()
+            st.subheader("Estadísticas")
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("Total de empleados", len(st.session_state.empleados_ej4))
+            col2.metric("Salario promedio", f"S/. {df['salario_base'].mean():.2f}")
+            col3.metric("Total bonos", f"S/. {df['bono'].sum():.2f}")
+            col4.metric("Nómina total", f"S/. {df['salario_neto'].sum():.2f}")
+        else:
+            st.info("No hay empleados registrados aún")
+    
+    # ====== TAB 3: ACTUALIZAR ======
+    with tab3:
+        st.subheader("Actualizar Empleado")
+        
+        if len(st.session_state.empleados_ej4) > 0:
+            nombres = [emp.nombre for emp in st.session_state.empleados_ej4]
+            indice = st.selectbox("Selecciona el empleado a actualizar:", range(len(nombres)), format_func=lambda x: nombres[x], key="select_actualizar")
+            
+            empleado_actual = st.session_state.empleados_ej4[indice]
+            resumen_actual = empleado_actual.resumen()
+            
+            st.markdown("**Datos actuales:**")
+            col1, col2, col3 = st.columns(3)
+            col1.metric("Salario Base", f"S/. {resumen_actual['salario_base']}")
+            col2.metric("Bono", f"S/. {resumen_actual['bono']}")
+            col3.metric("Salario Neto", f"S/. {resumen_actual['salario_neto']}")
+            
+            st.divider()
+            st.markdown("**Ingresa los nuevos valores:**")
+            
+            nombre_nuevo = st.text_input("Nombre", value=empleado_actual.nombre, key="act_nombre")
+            col1, col2 = st.columns(2)
+            with col1:
+                salario_nuevo = st.number_input("Salario base (S/.)", min_value=0.0, value=float(empleado_actual.salario_base), key="act_salario")
+            with col2:
+                bono_nuevo = st.number_input("Porcentaje bono (%)", min_value=0.0, max_value=100.0, value=float(empleado_actual.porcentaje_bono), key="act_bono")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                descuento_nuevo = st.number_input("Porcentaje descuento (%)", min_value=0.0, max_value=100.0, value=float(empleado_actual.porcentaje_descuento), key="act_descuento")
+            
+            if st.button("Guardar Cambios", key="btn_actualizar"):
+                try:
+                    empleado_actualizado = lf_clase.Empleado(
+                        nombre=nombre_nuevo,
+                        salario_base=salario_nuevo,
+                        porcentaje_bono=bono_nuevo,
+                        porcentaje_descuento=descuento_nuevo
+                    )
+                    st.session_state.empleados_ej4[indice] = empleado_actualizado
+                    st.success("Empleado actualizado correctamente")
+                except ValueError as e:
+                    st.error(str(e))
+        else:
+            st.info("No hay empleados para actualizar")
+    
+    # ====== TAB 4: ELIMINAR ======
+    with tab4:
+        st.subheader("Eliminar Empleado")
+        
+        if len(st.session_state.empleados_ej4) > 0:
+            nombres = [emp.nombre for emp in st.session_state.empleados_ej4]
+            indice = st.selectbox("Selecciona el empleado a eliminar:", range(len(nombres)), format_func=lambda x: nombres[x], key="select_eliminar")
+            
+            empleado_seleccionado = st.session_state.empleados_ej4[indice]
+            resumen = empleado_seleccionado.resumen()
+            
+            st.warning(f"¿Estás seguro de que deseas eliminar a **{empleado_seleccionado.nombre}**?")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric("Salario Base", f"S/. {resumen['salario_base']}")
+            with col2:
+                st.metric("Salario Neto", f"S/. {resumen['salario_neto']}")
+            
+            if st.button("Eliminar Definitivamente", key="btn_eliminar"):
+                del st.session_state.empleados_ej4[indice]
+                st.success("Empleado eliminado correctamente")
+        else:
+            st.info("No hay empleados para eliminar")
