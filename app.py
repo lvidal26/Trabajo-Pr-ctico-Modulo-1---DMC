@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 import libreria_funciones_proyecto1 as lf
@@ -71,9 +70,9 @@ elif pagina == "Ejercicio 1":
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
 
-     if "registros" not in st.session_state:
-     st.session_state.registros = []
-     
+    if "registros" not in st.session_state:
+        st.session_state.registros = []
+    
     nombre = st.text_input("Nombre del producto")
     categoria = st.selectbox("Categoría", ["Electrónica", "Ropa", "Alimentos"])
     precio = st.number_input("Precio", min_value=0.0)
