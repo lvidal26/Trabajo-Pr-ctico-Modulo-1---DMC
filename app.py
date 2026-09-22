@@ -17,7 +17,7 @@ if pagina == "Home":
     st.subheader("Bienvenido al proyecto Módulo 1 – Python Fundamentals")
     st.write("**Nombre:** Luis Vidal")
     st.write("**Edad:** 18 años")
-    st.write("**Ubicación:** Lima")
+    st.write("**Ubicación:** Lima - Perú")
     st.write("**Año:** 2026")
     
     st.divider()
@@ -107,8 +107,85 @@ elif pagina == "Ejercicio 2":
 
 # EJERCICIO 3
 elif pagina == "Ejercicio 3":
-    st.title("Funciones Externas")
-
+    st.title("Funciones desde Librería Externa - Gestión Académica")
+    st.markdown("Utiliza la clase EstudianteCurso para calcular desempeño académico")
+    
+    if "historico_ej3" not in st.session_state:
+        st.session_state.historico_ej3 = []
+    
+    st.markdown("Ingresa los datos del estudiante y ejecuta los cálculos")
+    
+    # Inputs del estudiante
+    nombre = st.text_input("Nombre del estudiante")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        actividades = st.number_input("Nota Actividades (0-20)", min_value=0.0, max_value=20.0, value=15.0)
+    with col2:
+        proyecto = st.number_input("Nota Proyecto (0-20)", min_value=0.0, max_value=20.0, value=16.0)
+    with col3:
+        examen_final = st.number_input("Nota Examen Final (0-20)", min_value=0.0, max_value=20.0, value=14.0)
+    
+    st.subheader("Pesos de calificación (%)")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        peso_actividades = st.number_input("Peso Actividades", min_value=0.0, max_value=100.0, value=30.0)
+    with col2:
+        peso_proyecto = st.number_input("Peso Proyecto", min_value=0.0, max_value=100.0, value=40.0)
+    with col3:
+        peso_examen_final = st.number_input("Peso Examen Final", min_value=0.0, max_value=100.0, value=30.0)
+    
+    st.subheader("Asistencia")
+    col1, col2 = st.columns(2)
+    with col1:
+        total_clases = st.number_input("Total de clases", min_value=1, value=40)
+    with col2:
+        clases_asistidas = st.number_input("Clases asistidas", min_value=0, value=35)
+    
+    if st.button("Calcular Desempeño Académico"):
+        if nombre == "":
+            st.error("Ingresa el nombre del estudiante")
+        else:
+            try:
+                estudiante = lf_clase.EstudianteCurso(
+                    nombre=nombre,
+                    actividades=actividades,
+                    proyecto=proyecto,
+                    examen_final=examen_final,
+                    peso_actividades=peso_actividades,
+                    peso_proyecto=peso_proyecto,
+                    peso_examen_final=peso_examen_final,
+                    total_clases=total_clases,
+                    clases_asistidas=clases_asistidas
+                )
+                
+                resumen = estudiante.resumen()
+                
+                col1, col2, col3 = st.columns(3)
+                col1.metric("Nota Final", f"{resumen['nota_final']}")
+                col2.metric("Asistencia", f"{resumen['asistencia_pct']}%")
+                col3.metric("Estado", resumen['estado'])
+                
+                if resumen['estado'] == "Aprueba":
+                    st.success("¡Estudiante aprobado!")
+                else:
+                    st.error("Estudiante no aprobado")
+                
+                # Agregar al histórico
+                st.session_state.historico_ej3.append(resumen)
+                st.success("Cálculo completado y guardado en el histórico")
+                
+            except ValueError as e:
+                st.error(str(e))
+    
+    st.divider()
+    st.subheader("Histórico de Estudiantes Evaluados")
+    if len(st.session_state.historico_ej3) > 0:
+        df_historico = pd.DataFrame(st.session_state.historico_ej3)
+        st.dataframe(df_historico, use_container_width=True)
+        st.write(f"Total de evaluaciones: {len(st.session_state.historico_ej3)}")
+    else:
+        st.info("Aún no hay estudiantes evaluados")
 # EJERCICIO 4
 elif pagina == "Ejercicio 4":
     st.title("CRUD")
