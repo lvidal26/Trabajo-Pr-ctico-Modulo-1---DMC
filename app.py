@@ -72,7 +72,7 @@ elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
 
  if "registros" not in st.session_state:
-        st.session_state.registros = []
+     st.session_state.registros = []
      
     nombre = st.text_input("Nombre del producto")
     categoria = st.selectbox("Categoría", ["Electrónica", "Ropa", "Alimentos"])
