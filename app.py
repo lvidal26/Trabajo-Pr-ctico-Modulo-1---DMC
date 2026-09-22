@@ -71,7 +71,7 @@ elif pagina == "Ejercicio 1":
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
 
- if "registros" not in st.session_state:
+     if "registros" not in st.session_state:
      st.session_state.registros = []
      
     nombre = st.text_input("Nombre del producto")
