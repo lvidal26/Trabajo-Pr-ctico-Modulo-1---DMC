@@ -71,6 +71,41 @@ elif pagina == "Ejercicio 1":
 elif pagina == "Ejercicio 2":
     st.title("Registro NumPy")
 
+ if "registros" not in st.session_state:
+        st.session_state.registros = []
+     
+    nombre = st.text_input("Nombre del producto")
+    categoria = st.selectbox("Categoría", ["Electrónica", "Ropa", "Alimentos"])
+    precio = st.number_input("Precio", min_value=0.0)
+    cantidad = st.number_input("Cantidad", min_value=0)
+    
+    if st.button("Agregar registro"):
+        if nombre == "":
+            st.error("Ingresa el nombre del producto")
+        elif precio <= 0:
+            st.error("El precio debe ser mayor que cero")
+        elif cantidad <= 0:
+            st.error("La cantidad debe ser mayor que cero")
+        else:
+            total = precio * cantidad
+            
+            nuevo = {
+                "nombre": nombre,
+                "categoria": categoria,
+                "precio": precio,
+                "cantidad": cantidad,
+                "total": total
+            }
+            st.session_state.registros.append(nuevo)
+            st.success("Registro agregado")
+    
+    # MOSTRAR TABLA
+    if len(st.session_state.registros) > 0:
+        df = pd.DataFrame(st.session_state.registros)
+        st.dataframe(df)
+    else:
+        st.info("Aún no hay registros")
+
 # EJERCICIO 3
 elif pagina == "Ejercicio 3":
     st.title("Funciones Externas")
