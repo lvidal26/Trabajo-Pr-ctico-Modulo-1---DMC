@@ -4,7 +4,7 @@ import libreria_funciones_proyecto1 as lf
 import librería_clases_proyecto1 as lf_clase
 import pandas as pd
 
-# CREAR LA NAVEGACIÓN
+
 pagina = st.sidebar.selectbox(
     "Menú",
     ["Home", "Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"]
@@ -99,7 +99,6 @@ elif pagina == "Ejercicio 2":
             st.session_state.registros.append(nuevo)
             st.success("Registro agregado")
     
-    # MOSTRAR TABLA
     if len(st.session_state.registros) > 0:
         df = pd.DataFrame(st.session_state.registros)
         st.dataframe(df)
@@ -115,8 +114,7 @@ elif pagina == "Ejercicio 3":
         st.session_state.historico_ej3 = []
     
     st.markdown("Ingresa los datos del estudiante y ejecuta los cálculos")
-    
-    # Inputs del estudiante
+
     nombre = st.text_input("Nombre del estudiante")
     
     col1, col2, col3 = st.columns(3)
@@ -172,7 +170,7 @@ elif pagina == "Ejercicio 3":
                 else:
                     st.error("Estudiante no aprobado")
                 
-                # Agregar al histórico
+   
                 st.session_state.historico_ej3.append(resumen)
                 st.success("Cálculo completado y guardado en el histórico")
                 
@@ -192,14 +190,12 @@ elif pagina == "Ejercicio 4":
     st.title("CRUD - Gestión de Empleados")
     st.markdown("Crea, lee, actualiza o elimina registros de empleados usando la clase Empleado.")
     
-    # Inicializar session_state
     if "empleados_ej4" not in st.session_state:
         st.session_state.empleados_ej4 = []
-    
-    # Selector de operación CRUD con tabs
+        
     tab1, tab2, tab3, tab4 = st.tabs(["Crear", "Leer", "Actualizar", "Eliminar"])
     
-    # ====== TAB 1: CREAR ======
+
     with tab1:
         st.subheader("Crear Nuevo Empleado")
         st.markdown("Completa el formulario para agregar un nuevo empleado")
@@ -231,7 +227,7 @@ elif pagina == "Ejercicio 4":
                 except ValueError as e:
                     st.error(str(e))
     
-    # ====== TAB 2: LEER ======
+  
     with tab2:
         st.subheader("Visualizar Todos los Empleados")
         
@@ -253,7 +249,7 @@ elif pagina == "Ejercicio 4":
         else:
             st.info("No hay empleados registrados aún")
     
-    # ====== TAB 3: ACTUALIZAR ======
+   
     with tab3:
         st.subheader("Actualizar Empleado")
         
@@ -299,7 +295,6 @@ elif pagina == "Ejercicio 4":
         else:
             st.info("No hay empleados para actualizar")
     
-    # ====== TAB 4: ELIMINAR ======
     with tab4:
         st.subheader("Eliminar Empleado")
         
@@ -307,9 +302,11 @@ elif pagina == "Ejercicio 4":
             nombres = [emp.nombre for emp in st.session_state.empleados_ej4]
             indice = st.selectbox("Selecciona el empleado a eliminar:", range(len(nombres)), format_func=lambda x: nombres[x], key="select_eliminar")
             
+            # Mostrar confirmación solo después de seleccionar
             empleado_seleccionado = st.session_state.empleados_ej4[indice]
             resumen = empleado_seleccionado.resumen()
             
+            st.divider()
             st.warning(f"¿Estás seguro de que deseas eliminar a **{empleado_seleccionado.nombre}**?")
             col1, col2 = st.columns(2)
             with col1:
